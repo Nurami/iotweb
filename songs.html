@@ -23,8 +23,8 @@
   </style>
 
 <h2>{{.CurrentSong}}</h2>
-{{. range}}
-  <h3>{{.Name}}</h3>
+{{range $idx, $item := .}}
+  <h3>{{$item.Name}}</h3>
 {{end}}
   
   <div id="first">
