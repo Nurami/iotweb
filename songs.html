@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<style>
+    .choosenButton {
+    background-color: #4CAF00;
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+    .defaultButton {
+    background-color: #808080;
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+  </style>
+
+<h2>{{.CurrentSong}}</h2>
+{{. range}}
+  <h3>{{.Name}}</h3>
+{{end}}
+  
+  <div id="first">
+    <h3>Title</h3>
+    <h4>note</h4>
+  </div>
+  <button id="second" class=defaultButton onclick="doIt(this.id)"> song1</button>
+  <br>
+  <button id="third" class=defaultButton onclick="doIt(this.id)"> song2</button>
+  
+  
+  <script>
+  var old_id = -1;
+  function doIt(clicked_id){
+    document.getElementById(clicked_id).className = "choosenButton";
+    if (old_id==-1){
+      old_id = clicked_id;
+    }else if(old_id!=clicked_id){
+      document.getElementById(old_id).className = "defaultButton";
+      old_id = clicked_id;
+    }
+  }
+  function sendRequest(choosen_id){
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:7878/songs?id='+encodeURIComponent(choosen_id), false);
+    xhr.send();
+    if (xhr.status != 200) {
+      console.log( xhr.status + ': ' + xhr.statusText );
+    } else {
+      alert( xhr.responseText );
+    }
+  }
+  
+  </script>
