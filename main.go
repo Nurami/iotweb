@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/alecthomas/template"
 )
@@ -37,31 +38,31 @@ func main() {
 
 }
 func songsHandler(rw http.ResponseWriter, r *http.Request) {
-	// url := "http://localhost:7878/songs"
+	url := "http://localhost:7878/songs"
 
-	// spaceClient := http.Client{
-	// 	Timeout: time.Second * 2,
-	// }
+	spaceClient := http.Client{
+		Timeout: time.Second * 2,
+	}
 
-	// req, err := http.NewRequest(http.MethodGet, url, nil)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	// req.Header.Set("User-Agent", "spacecount-tutorial")
+	req.Header.Set("User-Agent", "spacecount-tutorial")
 
-	// res, getErr := spaceClient.Do(req)
-	// if getErr != nil {
-	// 	log.Fatal(getErr)
-	// }
+	res, getErr := spaceClient.Do(req)
+	if getErr != nil {
+		log.Fatal(getErr)
+	}
 
-	// body, readErr := ioutil.ReadAll(res.Body)
-	// if readErr != nil {
-	// 	log.Fatal(readErr)
-	// }
-	str, err := ioutil.ReadFile("jsonExample.txt")
+	body, readErr := ioutil.ReadAll(res.Body)
+	if readErr != nil {
+		log.Fatal(readErr)
+	}
+
 	songs1 := songs{}
-	jsonErr := json.Unmarshal(str, &songs1)
+	jsonErr := json.Unmarshal(body, &songs1)
 	if jsonErr != nil {
 		log.Fatal(jsonErr)
 	}
