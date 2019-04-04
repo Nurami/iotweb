@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <style>
     .choosenButton {
+    width: 250px;
+    height: 50px;
+    border: 2px solid #1bd0d6;
     background-color: #4CAF00;
-    border: none;
     color: black;
     padding: 15px 32px;
     text-align: center;
@@ -11,8 +13,10 @@
     font-size: 16px;
   }
     .defaultButton {
+    width: 250px;
+    height: 50px;
+    border: 2px solid #1bd0d6;
     background-color: #808080;
-    border: none;
     color: black;
     padding: 15px 32px;
     text-align: center;
@@ -20,42 +24,39 @@
     display: inline-block;
     font-size: 16px;
   }
-  </style>
-
-<h2>{{.CurrentSong}}</h2>
-{{range $idx, $item := .}}
-  <h3>{{$item.Name}}</h3>
+  div {
+      text-align: center
+  }
+</style>
+<div>
+<h2 style="color:darkblue">Choose your song! :)</h2>
+{{range $index, $element := .Songs}}
+    <button id="{{$element.Id}}" class=defaultButton onclick="doIt(this.id)">{{$element.Name}}</button>
+    <br>
+    <br>
 {{end}}
-  
-  <div id="first">
-    <h3>Title</h3>
-    <h4>note</h4>
-  </div>
-  <button id="second" class=defaultButton onclick="doIt(this.id)"> song1</button>
-  <br>
-  <button id="third" class=defaultButton onclick="doIt(this.id)"> song2</button>
-  
-  
-  <script>
-  var old_id = -1;
-  function doIt(clicked_id){
-    document.getElementById(clicked_id).className = "choosenButton";
-    if (old_id==-1){
-      old_id = clicked_id;
-    }else if(old_id!=clicked_id){
-      document.getElementById(old_id).className = "defaultButton";
-      old_id = clicked_id;
+</div>
+
+<script>
+    var old_id = -1;
+    function doIt(clicked_id){
+        document.getElementById(clicked_id).className = "choosenButton";
+        if (old_id==-1){
+        old_id = clicked_id;
+        }else if(old_id!=clicked_id){
+        document.getElementById(old_id).className = "defaultButton";
+        old_id = clicked_id;
+        }
+        sendRequest(clicked_id);
     }
-  }
-  function sendRequest(choosen_id){
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:7878/songs?id='+encodeURIComponent(choosen_id), false);
-    xhr.send();
-    if (xhr.status != 200) {
-      console.log( xhr.status + ': ' + xhr.statusText );
-    } else {
-      alert( xhr.responseText );
+    function sendRequest(choosen_id){
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://169.254.121.188:7878/post', false);
+        xhr.send(choosen_id);
+        if (xhr.status != 200) {
+            console.log( xhr.status + ': ' + xhr.statusText );
+        } else {
+            console.log(xhr.responseText);
+        }
     }
-  }
-  
-  </script>
+</script>
